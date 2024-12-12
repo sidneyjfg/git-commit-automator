@@ -8,7 +8,7 @@ const simpleGit = require("simple-git");
 const git = simpleGit();
 
 const main = async () => {
-  console.log(chalk.blue("Starting Git Commit Automator..."));
+  console.log(chalk.blue("🌟 Starting Git Commit Automator..."));
 
   try {
     const args = process.argv.slice(2);
@@ -57,13 +57,13 @@ const main = async () => {
       return;
     }
 
-    console.log(chalk.yellow("Alterações detectadas:\n"), changes);
+    console.log(chalk.yellow("✏️ Alterações detectadas:\n"), changes);
 
     await createGitignore();
 
     console.log(chalk.yellow("Aguarde, estamos criando a mensagem de commit..."));
     const commitMessage = await generateCommitMessage(changes);
-    console.log(chalk.blue("Mensagem de commit gerada:\n"), commitMessage);
+    console.log(chalk.blue("✅ Mensagem de commit gerada:\n"), commitMessage);
 
     await commitAndPush(commitMessage);
   } catch (error) {

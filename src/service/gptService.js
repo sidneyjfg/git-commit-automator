@@ -12,7 +12,7 @@ const generateCommitMessage = async (changes) => {
     const prompt = `Generate a concise, one-line commit message in Portuguese that uses professional commit prefixes like "Fix", "Refactor", "Style", or others, followed by a clear explanation of what was changed and why, ensuring the message is easily understandable for developers reviewing the commit:\n${changes}`;
 
     // Gera o conteúdo com base no prompt
-    console.log(chalk.yellow("Aguarde... estamos criando a mensagem de commit."));
+    console.log(chalk.yellow("⏳ Aguarde... estamos criando a mensagem de commit."));
     
     const result = await model.generateContent(prompt);
     

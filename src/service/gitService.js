@@ -54,7 +54,7 @@ const checkRemote = async () => {
             console.log(chalk.yellow('Nenhum repositório remoto foi encontrado.'));
             return false;
         }
-        console.log(chalk.green(`Repositório remoto encontrado: ${remotes[0].refs.fetch}`));
+        console.log(chalk.green(`🔍 Repositório remoto encontrado: ${remotes[0].refs.fetch}`));
         return true;
     } catch (error) {
         console.error(chalk.red('Erro ao verificar o repositório remoto:', error.message));
@@ -98,9 +98,13 @@ const commitAndPush = async (message) => {
         await git.add('.'); // Adiciona todas as alterações
         await git.commit(message); // Cria o commit com a mensagem gerada
 
+        // Obtém a branch atual
+        const branch = await git.branchLocal();
+
         try {
+            console.log(chalk.yellow(`📤 Realizando push para a branch: ${branch.current}`));
             await git.push(); // Tenta enviar as alterações
-            console.log(chalk.green('Alterações commitadas e enviadas com sucesso!'));
+            console.log(chalk.green('✔️ Alterações commitadas e enviadas com sucesso!'));
         } catch (pushError) {
             if (pushError.message.includes('no upstream branch')) {
                 const branch = await git.branchLocal(); // Obtém o branch atual
@@ -138,13 +142,13 @@ const createGitignore = async () => {
         // Lista os arquivos e pastas no diretório atual
         const files = fs.readdirSync(process.cwd());
 
-        console.log(chalk.yellow('Arquivos e pastas no diretório atual:'));
+        console.log(chalk.yellow('📄 Arquivos e pastas no diretório atual:'));
         files.forEach((file, index) => {
             console.log(`${index + 1}. ${file}`);
         });
 
         const response = await askQuestion(
-            'Digite os números dos arquivos/pastas que deseja adicionar ao .gitignore, separados por vírgula (ou digite ("pular" ou "0") para ignorar):'
+            '📦 Digite os números dos arquivos/pastas que deseja adicionar ao .gitignore, separados por vírgula (ou digite ("pular" ou "0") para ignorar):'
         );
 
         if (response.toLowerCase() === 'pular' || response.toLowerCase() === 'skip' || response.toLowerCase() === '0') {
@@ -159,7 +163,7 @@ const createGitignore = async () => {
         // Adiciona as entradas ao .gitignore
         if (entriesToIgnore.length > 0) {
             fs.appendFileSync(gitignorePath, `\n${entriesToIgnore.join('\n')}`);
-            console.log(chalk.green('Entradas adicionadas ao .gitignore com sucesso!'));
+            console.log(chalk.green('✔️ Entradas adicionadas ao .gitignore com sucesso!'));
         } else {
             console.log(chalk.yellow('Nenhuma entrada válida selecionada para o .gitignore.'));
         }
