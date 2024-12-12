@@ -1,18 +1,29 @@
 {
   "name": "git-commit-automator",
   "version": "1.0.0",
+  "description": "Automatize commits do Git com geração de mensagens usando IA.",
   "main": "index.js",
+  "bin": {
+    "sid": "./src/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["git", "automation", "ai", "commit", "cli-tool"],
+  "author": "Sidney Junio - sidneyjunio191@gmail.com",
+  "license": "MIT",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "chalk": "^4.1.2",
     "dotenv": "^16.4.7",
     "simple-git": "^3.27.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sidneyjfg/git-commit-automator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sidneyjfg/git-commit-automator/issues"
+  },
+  "homepage": "https://github.com/sidneyjfg/git-commit-automator#readme"
 }
