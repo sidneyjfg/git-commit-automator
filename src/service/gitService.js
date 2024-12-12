@@ -95,19 +95,34 @@ const getChanges = async () => {
 const commitAndPush = async (message) => {
     try {
         await createGitignore(); // Verifica ou cria o .gitignore antes do git add
-        await git.add('.');
-        await git.commit(message);
-        await git.push();
-        console.log(chalk.green('Alterações commitadas e enviadas com sucesso!'));
+        await git.add('.'); // Adiciona todas as alterações
+        await git.commit(message); // Cria o commit com a mensagem gerada
+
+        try {
+            await git.push(); // Tenta enviar as alterações
+            console.log(chalk.green('Alterações commitadas e enviadas com sucesso!'));
+        } catch (pushError) {
+            if (pushError.message.includes('no upstream branch')) {
+                const branch = await git.branchLocal(); // Obtém o branch atual
+                console.log(chalk.yellow(`Configurando o branch upstream para: ${branch.current}`));
+                await git.push(['--set-upstream', 'origin', branch.current]); // Configura o upstream
+                console.log(chalk.green(`Branch upstream configurado para: ${branch.current}`));
+                await git.push(); // Reenvia as alterações após configurar o upstream
+                console.log(chalk.green('Alterações commitadas e enviadas com sucesso após configurar o upstream!'));
+            } else {
+                throw pushError; // Lança o erro se não for relacionado ao upstream
+            }
+        }
     } catch (error) {
         if (error.message.includes('Permission denied')) {
             console.error(chalk.red('Erro ao enviar: Permissão negada. Verifique sua chave SSH ou método de autenticação.'));
         } else {
             console.error(chalk.red('Erro ao realizar commit ou enviar alterações:', error.message));
         }
-        throw error;
+        throw error; // Propaga o erro para ser tratado no nível superior
     }
 };
+
 
 // Cria um .gitignore caso não exista e permite adicionar arquivos
 const createGitignore = async () => {
